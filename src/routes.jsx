@@ -1,10 +1,10 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import Homepage from './components/Homepage';
+import IndexPage from './components/IndexPage';
 
 const routes = (
     <Route path="/">
-        <IndexRoute component={Homepage}/>
+        <IndexRoute component={IndexPage}/>
     </Route>
 );
 
