@@ -5,9 +5,9 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from './routes';
 import NotFoundPage from './components/NotFoundPage';
-import vhost from 'vhost';
 
 process.env.NODE_ENV = 'development';
+process.env.BROWSER  = false;
 
 // initialize the server and configure support for ejs templates
 const app = new Express();
@@ -15,8 +15,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // define the folder that will be used for static assets
-console.log(path.join(__dirname, 'web'));
-app.use('/', Express.static(path.join(__dirname, 'web')));
+app.use('/', Express.static(path.join(__dirname, '..', 'public')));
 
 // universal routing and rendering
 app.get('*', (request, response) => {
@@ -38,7 +37,7 @@ app.get('*', (request, response) => {
                 main = renderToString(<RouterContext {...renderProps}/>);
 
                 // This is terrible, but can't find any other way
-                if (renderProps.components[1]().props.className === 'not-found') {
+                if (renderProps.components[1]().props.children.props.className === 'not-found') {
                     response.status(404);
                 }
             } else {
@@ -50,8 +49,6 @@ app.get('*', (request, response) => {
         }
     );
 });
-
-app.use(vhost('portfolio.dev', app));
 
 const port = process.env.PORT || 3000;
 const env = process.env.NODE_ENV || 'production';
