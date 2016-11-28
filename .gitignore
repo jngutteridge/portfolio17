@@ -1,2 +1,5 @@
 /babel_cache/
 /node_modules/
+/bower_components/
+/public/app.js
+/public/style.css

@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
+
+import Layout from './Layout';
+import IntroSection from './IntroSection';
 
 export default () => {
     return (
-        <div className="index-page">
-            <h1>Hello</h1>
-            <h2>It works!</h2>
-        </div>
+        <Layout>
+            <IntroSection/>
+        </Layout>
     );
 }
