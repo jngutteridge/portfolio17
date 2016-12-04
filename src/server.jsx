@@ -9,15 +9,12 @@ import NotFoundPage from './components/NotFoundPage';
 process.env.NODE_ENV = 'development';
 process.env.BROWSER  = false;
 
-// initialize the server and configure support for ejs templates
 const app = new Express();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-// define the folder that will be used for static assets
 app.use('/', Express.static(path.join(__dirname, '..', 'public')));
 
-// universal routing and rendering
 app.get('*', (request, response) => {
     match(
         { routes, location: request.url },
@@ -36,9 +33,10 @@ app.get('*', (request, response) => {
             if (renderProps) {
                 main = renderToString(<RouterContext {...renderProps}/>);
 
-                // This is terrible, but can't find any other way
-                if (renderProps.components[1]().props.children.props.className === 'not-found') {
-                    response.status(404);
+                const lastRoute = renderProps.routes[renderProps.routes.length - 1];
+
+                if (lastRoute.hasOwnProperty('status')) {
+                    response.status(lastRoute.status);
                 }
             } else {
                 main = renderToString(<NotFoundPage/>);
